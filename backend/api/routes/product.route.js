@@ -1,13 +1,34 @@
 const express = require('express');
 const Product = require('../models/product.model');
 const router = express.Router();
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, './uploads');
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now() + '-' + file.originalname);
+  }
+});
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 1024 * 1024 * 5 },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(null, false);
+    }
+  }
+});
 
 router.route('/').get((req, res, next) => {
   Product.find()
     .then(products => {
       if (products.length > 0) {
+        const message = 'all products are successfully fetched'.toUpperCase();
         res.status(200).json({
-          message: 'Succesfully handled GET request to /products',
+          message: message,
           fetchedProducts: products
         });
       } else {
@@ -23,16 +44,19 @@ router.route('/').get((req, res, next) => {
     });
 });
 
-router.route('/').post((req, res, next) => {
+router.route('/add').post(upload.single('product'), (req, res, next) => {
+  console.log(req.file);
   const product = new Product({
     name: req.body.name,
-    price: req.body.price
+    price: req.body.price,
+    productImage: req.file.path
   });
   product
     .save()
     .then(() => {
+      const message = 'a product is successfully created'.toUpperCase();
       res.status(201).json({
-        message: 'Succesfully handled POST requests to /products/',
+        message: message,
         createdProduct: product
       });
     })
@@ -48,8 +72,9 @@ router.route('/:productId').get((req, res, next) => {
   Product.findById(id)
     .then(product => {
       if (product) {
+        const message = 'a product is successfully fetched'.toUpperCase();
         res.status(200).json({
-          message: 'Succesfully handled requests to /products/' + id,
+          message: message,
           productId: id,
           fetchedProduct: product
         });
@@ -79,8 +104,9 @@ router.route('/:productId').patch((req, res, next) => {
   }
   Product.update({ _id: id }, { $set: updatedProduct })
     .then(response => {
+      const message = 'a product is successfully updated'.toUpperCase();
       res.status(200).json({
-        message: 'Succesfully handled PATCH requests to /products/' + id,
+        message: message,
         response: response,
         updatedProduct: updatedProduct
       });
@@ -96,8 +122,9 @@ router.route('/:productId').delete((req, res, next) => {
   const id = req.params.productId;
   Product.remove({ _id: id })
     .then(resposne => {
+      const message = 'a product is successfully deleted'.toUpperCase();
       res.status(200).json({
-        message: 'Succesfully handled DELETE requests to /products/' + id,
+        message: message,
         deletedProduct: id,
         resposne: resposne
       });

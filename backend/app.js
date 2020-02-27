@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
+
 const url =
   'mongodb+srv://somraj:' +
   process.env.ATLAS_URL_PW +
