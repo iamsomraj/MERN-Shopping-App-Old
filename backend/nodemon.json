@@ -1,5 +1,7 @@
 {
   "env": {
-    "ATLAS_URL_PW": "iamsomraj"
+    "ATLAS_URL_PW": "iamsomraj",
+    "JWT_ENV": "jwt123",
+    "PORT": "5000"
   }
 }

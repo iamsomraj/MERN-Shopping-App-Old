@@ -2,10 +2,10 @@ const express = require('express');
 const app = express();
 const productRoute = require('./api/routes/product.route');
 const orderRoute = require('./api/routes/order.route');
+const userRoute = require('./api/routes/user.route');
 const morgan = require('morgan');
 const cors = require('cors');
 const mongoose = require('mongoose');
-
 
 const url =
   'mongodb+srv://somraj:' +
@@ -27,6 +27,7 @@ app.use(express.json());
 
 app.use('/products', productRoute);
 app.use('/orders', orderRoute);
+app.use('/user', userRoute);
 
 app.use((req, res, next) => {
   const error = new Error('Not found');

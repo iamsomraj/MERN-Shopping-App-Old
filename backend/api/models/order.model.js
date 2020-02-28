@@ -11,6 +11,11 @@ const orderSchema = new Schema(
     quantity: {
       type: Number,
       default: 1
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
     }
   },
   {

@@ -2,9 +2,12 @@ const express = require('express');
 const Product = require('../models/product.model');
 const router = express.Router();
 const multer = require('multer');
+const fs = require('fs');
+const auth = require('../middleware/authentication');
+
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    cb(null, './uploads');
+    cb(null, './uploads/product/');
   },
   filename: function(req, file, cb) {
     cb(null, file.fieldname + '-' + Date.now() + '-' + file.originalname);
@@ -44,13 +47,15 @@ router.route('/').get((req, res, next) => {
     });
 });
 
-router.route('/add').post(upload.single('product'), (req, res, next) => {
+router.route('/add').post(auth, upload.single('product'), (req, res, next) => {
   console.log(req.file);
   const product = new Product({
     name: req.body.name,
     price: req.body.price,
-    productImage: req.file.path
+    productImage: req.file.path,
+    userId: req.userData.id
   });
+  console.log(req.userData);
   product
     .save()
     .then(() => {
@@ -96,13 +101,16 @@ router.route('/:productId').get((req, res, next) => {
     });
 });
 
-router.route('/:productId').patch((req, res, next) => {
+router.route('/:productId').patch(auth, (req, res, next) => {
   const id = req.params.productId;
   const updatedProduct = {};
   for (const iterator of req.body) {
     updatedProduct[iterator.propName] = iterator.value;
   }
+  updatedProduct.user = { ...req.userData };
+
   Product.update({ _id: id }, { $set: updatedProduct })
+    .populate('userId')
     .then(response => {
       const message = 'a product is successfully updated'.toUpperCase();
       res.status(200).json({
@@ -118,16 +126,36 @@ router.route('/:productId').patch((req, res, next) => {
     });
 });
 
-router.route('/:productId').delete((req, res, next) => {
+router.route('/:productId').delete(auth, (req, res, next) => {
   const id = req.params.productId;
-  Product.remove({ _id: id })
-    .then(resposne => {
-      const message = 'a product is successfully deleted'.toUpperCase();
-      res.status(200).json({
-        message: message,
-        deletedProduct: id,
-        resposne: resposne
+  Product.findById(id)
+    .populate('userId')
+    .then(product => {
+      fs.unlink(product.productImage, err => {
+        if (err) {
+          return res.status(404).json({
+            message: err.message
+          });
+        }
       });
+    })
+
+    .then(() => {
+      Product.deleteOne({ _id: id })
+        .populate('userId')
+        .then(resposne => {
+          const message = 'The product and image is successfully deleted'.toUpperCase();
+          res.status(200).json({
+            message: message,
+            deletedProduct: id,
+            resposne: resposne
+          });
+        })
+        .catch(error => {
+          res.status(500).json({
+            message: error.message
+          });
+        });
     })
     .catch(error => {
       res.status(500).json({

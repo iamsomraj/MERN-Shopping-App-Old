@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Order = require('../models/order.model');
+const auth = require('../middleware/authentication');
 
-router.route('/').get((req, res, next) => {
+router.route('/').get(auth, (req, res, next) => {
   Order.find()
-    .populate('productId')
+    .populate('productId userId')
     .then(orders => {
       const message = 'all orders are successfully fetched'.toUpperCase();
       if (orders.length > 0) {
@@ -27,10 +28,11 @@ router.route('/').get((req, res, next) => {
     });
 });
 
-router.route('/add').post((req, res, next) => {
+router.route('/add').post(auth, (req, res, next) => {
   const order = new Order({
     productId: req.body.productId,
-    quantity: req.body.quantity
+    quantity: req.body.quantity,
+    userId: req.userData.id
   });
   order
     .save()
@@ -48,9 +50,10 @@ router.route('/add').post((req, res, next) => {
     });
 });
 
-router.route('/:orderId').get((req, res, next) => {
+router.route('/:orderId').get(auth, (req, res, next) => {
   const id = req.params.orderId;
   Order.findById(id)
+    .populate('productId userId')
     .then(order => {
       if (order) {
         const message = 'an order is successfully fetched'.toUpperCase();
@@ -73,7 +76,7 @@ router.route('/:orderId').get((req, res, next) => {
     });
 });
 
-router.route('/:orderId').delete((req, res, next) => {
+router.route('/:orderId').delete(auth, (req, res, next) => {
   const id = req.params.orderId;
   Order.remove({ _id: id })
     .then(response => {
