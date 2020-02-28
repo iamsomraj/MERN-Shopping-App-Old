@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Order = require('../models/order.model');
-const auth = require('../middleware/authentication');
+const auth = require('../middleware/login.authentication');
 
 router.route('/').get(auth, (req, res, next) => {
   Order.find()
