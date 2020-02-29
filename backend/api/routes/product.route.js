@@ -74,7 +74,7 @@ router.route('/add').post(auth, upload.single('product'), (req, res, next) => {
 
 router.route('/:productId').get((req, res, next) => {
   const id = req.params.productId;
-  Product.findById(id)
+  Product.find({ _id: id, userId: req.userData.id })
     .then(product => {
       if (product) {
         const message = 'a product is successfully fetched'.toUpperCase();
@@ -109,15 +109,26 @@ router.route('/:productId').patch(auth, (req, res, next) => {
   }
   updatedProduct.user = { ...req.userData };
 
-  Product.update({ _id: id }, { $set: updatedProduct })
+  Product.updateOne(
+    { _id: id, userId: req.userData.id },
+    { $set: updatedProduct }
+  )
     .populate('userId')
     .then(response => {
-      const message = 'a product is successfully updated'.toUpperCase();
-      res.status(200).json({
-        message: message,
-        response: response,
-        updatedProduct: updatedProduct
-      });
+      if (response.nModified > 0) {
+        const message = 'a product is successfully updated'.toUpperCase();
+        res.status(200).json({
+          message: message,
+          response: response,
+          updatedProduct: updatedProduct
+        });
+      } else {
+        const error = new Error('Unauthorized access to the product');
+        // 404 because it does not match
+        res.status(401).json({
+          message: error.message
+        });
+      }
     })
     .catch(error => {
       res.status(500).json({
@@ -128,34 +139,24 @@ router.route('/:productId').patch(auth, (req, res, next) => {
 
 router.route('/:productId').delete(auth, (req, res, next) => {
   const id = req.params.productId;
-  Product.findById(id)
-    .populate('userId')
-    .then(product => {
-      fs.unlink(product.productImage, err => {
-        if (err) {
-          return res.status(404).json({
-            message: err.message
-          });
-        }
-      });
-    })
 
-    .then(() => {
-      Product.deleteOne({ _id: id })
-        .populate('userId')
-        .then(resposne => {
-          const message = 'The product and image is successfully deleted'.toUpperCase();
-          res.status(200).json({
-            message: message,
-            deletedProduct: id,
-            resposne: resposne
-          });
-        })
-        .catch(error => {
-          res.status(500).json({
-            message: error.message
-          });
+  Product.deleteOne({ _id: id, userId: req.userData.id })
+    .populate('userId')
+    .then(resposne => {
+      if (resposne.deletedCount > 0) {
+        const message = 'The product and image is successfully deleted'.toUpperCase();
+        res.status(200).json({
+          message: message,
+          deletedProduct: id,
+          resposne: resposne
         });
+      } else {
+        const error = new Error('Unauthorized access to the product');
+        // 404 because it does not match
+        res.status(401).json({
+          message: error.message
+        });
+      }
     })
     .catch(error => {
       res.status(500).json({

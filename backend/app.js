@@ -6,6 +6,7 @@ const userRoute = require('./api/routes/user.route');
 const morgan = require('morgan');
 const cors = require('cors');
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 const url =
   'mongodb+srv://somraj:' +

@@ -4,8 +4,8 @@ const Order = require('../models/order.model');
 const auth = require('../middleware/login.authentication');
 
 router.route('/').get(auth, (req, res, next) => {
-  Order.find()
-    .populate('productId userId')
+  Order.find({ userId: req.userData.id })
+    .populate('userId')
     .then(orders => {
       const message = 'all orders are successfully fetched'.toUpperCase();
       if (orders.length > 0) {
@@ -15,8 +15,8 @@ router.route('/').get(auth, (req, res, next) => {
           fetchedOrders: orders
         });
       } else {
-        const error = new Error('No valid orders are there to be fetched!');
-        return res.status(500).json({
+        const error = new Error('No valid orders are to be fetched');
+        return res.status(400).json({
           message: error.message
         });
       }
@@ -52,10 +52,10 @@ router.route('/add').post(auth, (req, res, next) => {
 
 router.route('/:orderId').get(auth, (req, res, next) => {
   const id = req.params.orderId;
-  Order.findById(id)
-    .populate('productId userId')
+  Order.find({ _id: id, userId: req.userData.id })
+    .populate('userId')
     .then(order => {
-      if (order) {
+      if (order.length == 1) {
         const message = 'an order is successfully fetched'.toUpperCase();
         res.status(200).json({
           message: message,
@@ -63,8 +63,10 @@ router.route('/:orderId').get(auth, (req, res, next) => {
           fetchedOrder: order
         });
       } else {
-        const error = new Error('No valid order matches the order id ' + id);
-        return res.status(404).json({
+        const error = new Error(
+          'Unauthorized access to the order or no order matches'
+        );
+        res.status(401).json({
           message: error.message
         });
       }
@@ -78,14 +80,21 @@ router.route('/:orderId').get(auth, (req, res, next) => {
 
 router.route('/:orderId').delete(auth, (req, res, next) => {
   const id = req.params.orderId;
-  Order.remove({ _id: id })
+  Order.deleteOne({ _id: id, userId: req.userData.id })
     .then(response => {
-      const message = 'an order is successfully deleted'.toUpperCase();
-      res.status(200).json({
-        message: message,
-        deletedOrderId: id,
-        response: response
-      });
+      if (response.deletedCount > 0) {
+        const message = 'an order is successfully deleted'.toUpperCase();
+        res.status(200).json({
+          message: message,
+          deletedOrderId: id,
+          response: response
+        });
+      } else {
+        const error = new Error('Unauthorized access to the order');
+        res.status(401).json({
+          message: error.message
+        });
+      }
     })
     .catch(error => {
       res.status(500).json({

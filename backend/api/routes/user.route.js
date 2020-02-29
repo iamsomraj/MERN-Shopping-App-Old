@@ -3,6 +3,7 @@ const User = require('../models/user.model');
 const Router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const auth = require('../middleware/login.authentication');
 
 Router.route('/signup').post((req, res, next) => {
   User.find({ username: req.body.username }).then(user => {
@@ -58,7 +59,7 @@ Router.route('/login').post((req, res, next) => {
             },
             process.env.JWT_ENV || 'jwt123',
             {
-              expiresIn: '1h'
+              expiresIn: '6h'
             }
           );
           const message = 'A user is logged in'.toUpperCase();
@@ -76,16 +77,23 @@ Router.route('/login').post((req, res, next) => {
   });
 });
 
-Router.route('/:userId').delete((req, res, next) => {
+Router.route('/:userId').delete(auth, (req, res, next) => {
   const id = req.params.userId;
-  User.deleteOne({ _id: id })
+  User.deleteOne({ _id: id, _id: req.userData.id })
     .then(response => {
-      const message = 'a user is successfully deleted'.toUpperCase();
-      res.status(200).json({
-        message: message,
-        deletedUserId: id,
-        response: response
-      });
+      if (response.deletedCount > 0) {
+        const message = 'a user is successfully deleted'.toUpperCase();
+        res.status(200).json({
+          message: message,
+          deletedUserId: id,
+          response: response
+        });
+      } else {
+        const error = new Error('Unauthorised access');
+        return res.status(401).json({
+          message: error.message
+        });
+      }
     })
     .catch(error => {
       res.status(500).json({
