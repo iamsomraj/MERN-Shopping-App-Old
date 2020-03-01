@@ -26,6 +26,8 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 
+app.use(express.static('public'));
+
 app.use('/products', productRoute);
 app.use('/orders', orderRoute);
 app.use('/user', userRoute);

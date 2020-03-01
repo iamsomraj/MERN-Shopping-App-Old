@@ -6,6 +6,7 @@ const auth = require('../middleware/login.authentication');
 router.route('/').get(auth, (req, res, next) => {
   Order.find({ userId: req.userData.id })
     .populate('userId')
+    .populate('productId')
     .then(orders => {
       const message = 'all orders are successfully fetched'.toUpperCase();
       if (orders.length > 0) {
@@ -54,6 +55,7 @@ router.route('/:orderId').get(auth, (req, res, next) => {
   const id = req.params.orderId;
   Order.find({ _id: id, userId: req.userData.id })
     .populate('userId')
+    .populate('productId')
     .then(order => {
       if (order.length == 1) {
         const message = 'an order is successfully fetched'.toUpperCase();
