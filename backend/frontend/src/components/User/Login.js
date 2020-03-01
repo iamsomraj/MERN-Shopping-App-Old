@@ -1,8 +1,6 @@
 import React from 'react';
 import Axios from '../../Axios';
-let Token = {
-  value: ''
-};
+
 class Login extends React.Component {
   state = {
     username: '',
@@ -11,7 +9,7 @@ class Login extends React.Component {
     message: '',
     token: ''
   };
-  signUpBtnHandler = (event) => {
+  signUpBtnHandler = event => {
     event.preventDefault();
     window.location = 'signup';
   };
@@ -28,13 +26,16 @@ class Login extends React.Component {
       };
       Axios.post('/user/login', user)
         .then(response => {
-          console.log(response);
-          console.log(response.data.token);
+          // console.log(response);
+          // console.log(response.data.token);
           this.setState({
             message: response.data.message,
             token: response.data.token
           });
-          Token.value = this.state.token;
+          Axios.defaults.headers.common['Authorization'] =
+            'Bearer ' + response.data.token;
+          Axios.defaults.headers.common['User'] = 'User ' + response.data.user;
+          console.log(Axios.defaults.headers.common['Authorization']);
         })
         .catch(error => {
           this.setState({
@@ -128,4 +129,4 @@ class Login extends React.Component {
   };
 }
 
-export { Login, Token };
+export default Login;

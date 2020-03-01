@@ -1,7 +1,6 @@
 import React from 'react';
 import Axios from '../../Axios';
 import Product from './Product';
-import { Token } from '../User/Login';
 
 class Products extends React.Component {
   state = {
@@ -11,16 +10,13 @@ class Products extends React.Component {
 
   buyProduct = (id, q) => {
     if (q !== 0) {
+      console.log(Axios.defaults.headers.common['Authorization']);
+
       const order = {
         productId: id,
         quantity: q
       };
-      Axios.post('/orders/add', order, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + Token.value
-        }
-      })
+      Axios.post('/orders/add', order)
         .then(response => {
           console.log(response.data);
           this.setState({
@@ -39,8 +35,7 @@ class Products extends React.Component {
     let products = [];
     this.state.products.forEach((product, index) => {
       products.push(
-        <div className="col-sm-4" key={index}>
-          <br />
+        <div className="col-sm-4" key={index} style={{marginBottom: '1rem'}}>
           <Product
             id={product._id}
             name={product.name}
@@ -49,9 +44,9 @@ class Products extends React.Component {
             quantity={product.quantity}
             quantityHandler={() => this.quantityHandler(index)}
             seller={product.userId}
+            edit={() => this.editProduct(product._id)}
             buy={() => this.buyProduct(product._id, product.quantity)}
           />
-          <br />
         </div>
       );
     });

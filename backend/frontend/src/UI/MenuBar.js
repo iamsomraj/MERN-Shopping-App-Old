@@ -16,6 +16,11 @@ export default class MenuBar extends Component {
               </Link>
             </li>
             <li className="navbar-item">
+              <Link to="/products/add" className="nav-link">
+                Create Product
+              </Link>
+            </li>
+            <li className="navbar-item">
               <Link to="/orders/" className="nav-link">
                 Orders
               </Link>

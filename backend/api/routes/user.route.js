@@ -65,6 +65,7 @@ Router.route('/login').post((req, res, next) => {
           const message = 'A user is logged in'.toUpperCase();
           res.status(200).json({
             message: message,
+            user: user[0]._id,
             token: token
           });
         } else {

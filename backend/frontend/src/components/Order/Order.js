@@ -5,8 +5,10 @@ const Order = props => (
   <tr>
     <td>{props.order._id}</td>
     <td>{props.order.quantity}</td>
-    <td>{props.order.productId}</td>
+    <td>{props.order.productId._id}</td>
+    <td>{props.order.productId.name}</td>
     <td>{new Date().toUTCString(props.order.createdAt)}</td>
+    <td>{props.order.productId.price * props.order.quantity}</td>
     <td>
       <a href="#" onClick={() => props.deleteOrder(props.order._id)}>
         Delete

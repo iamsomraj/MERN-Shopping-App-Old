@@ -1,6 +1,5 @@
 import React from 'react';
 import Axios from '../../Axios';
-import { Token } from '../User/Login';
 import Order from './Order';
 
 class Orders extends React.Component {
@@ -11,40 +10,24 @@ class Orders extends React.Component {
   };
 
   componentDidMount = () => {
-    if (Token.value !== '') {
-      Axios.get('/orders', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + Token.value
-        }
-      })
-        .then(response => {
-          console.log(response);
-          console.log(response.data);
-          this.setState({
-            message: response.data.message,
-            orders: response.data.fetchedOrders
-          });
-        })
-        .catch(error => {
-          this.setState({
-            message: error.message
-          });
+    Axios.get('/orders')
+      .then(response => {
+        console.log(response);
+        console.log(response.data);
+        this.setState({
+          message: response.data.message,
+          orders: response.data.fetchedOrders
         });
-    } else {
-      this.setState({
-        message: 'Please login first'
+      })
+      .catch(error => {
+        this.setState({
+          message: error.message
+        });
       });
-    }
   };
 
   onDeleteOrderHandler = id => {
-    Axios.delete('/orders/' + id, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + Token.value
-      }
-    })
+    Axios.delete('/orders/' + id)
       .then(response => {
         this.setState({
           message: response.data.message
@@ -99,7 +82,9 @@ class Orders extends React.Component {
                 <th>Order Id</th>
                 <th>Quantity</th>
                 <th>Product Id</th>
+                <th>Product Name</th>
                 <th>Date Ordered</th>
+                <th>Price</th>
                 <th>Actions</th>
               </tr>
             </thead>

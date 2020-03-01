@@ -72,7 +72,7 @@ router.route('/add').post(auth, upload.single('product'), (req, res, next) => {
     });
 });
 
-router.route('/:productId').get((req, res, next) => {
+router.route('/:productId').get(auth, (req, res, next) => {
   const id = req.params.productId;
   Product.find({ _id: id, userId: req.userData.id })
     .then(product => {
@@ -95,7 +95,7 @@ router.route('/:productId').get((req, res, next) => {
     })
     .catch(error => {
       // 500 because something failed from fetching
-      res.status(500).json({
+      res.status(404).json({
         message: error.message
       });
     });
