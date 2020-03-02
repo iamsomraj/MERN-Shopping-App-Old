@@ -5,9 +5,11 @@ import EditProduct from './components/Product/EditProduct';
 import CreateProduct from './components/Product/CreateProduct';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import  Login  from './components/User/Login';
+import Login from './components/User/Login';
 import Signup from './components/User/Signup';
 import Orders from './components/Order/Orders';
+import Profile from './components/User/Profile';
+import Footer from './UI/Footer';
 
 class App extends React.Component {
   render = () => {
@@ -20,7 +22,9 @@ class App extends React.Component {
         <Route path="/products/add/" exact component={CreateProduct} />
         <Route path="/users/login/" exact component={Login} />
         <Route path="/users/signup/" exact component={Signup} />
+        <Route path="/users/profile/:name" exact component={Profile} />
         <Route path="/orders/" exact component={Orders} />
+        <Footer />
       </Router>
     );
   };

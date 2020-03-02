@@ -24,7 +24,6 @@ class EditProduct extends React.Component {
   };
 
   componentDidMount = () => {
-    console.log(this.props.match.params.id);
     Axios.get('products/' + this.props.match.params.id)
       .then(response => {
         this.setState({
@@ -56,7 +55,6 @@ class EditProduct extends React.Component {
     }
     Axios.patch('products/' + this.props.match.params.id, data)
       .then(response => {
-        console.log(response.data);
         this.setState({
           message: response.data.message
         });
@@ -72,7 +70,6 @@ class EditProduct extends React.Component {
     event.preventDefault();
     Axios.delete('products/' + this.props.match.params.id)
       .then(response => {
-        console.log(response.data);
         this.setState({
           message: response.data.message
         });

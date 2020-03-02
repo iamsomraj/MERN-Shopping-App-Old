@@ -25,6 +25,30 @@ const upload = multer({
   }
 });
 
+router.route('/user/:userId').get(auth, (req, res, next) => {
+  const id = req.params.userId;
+  Product.find({ userId: id })
+    .then(products => {
+      console.log(products)
+      if (products.length > 0) {
+        const message = 'all products are successfully fetched'.toUpperCase();
+        res.status(200).json({
+          message: message,
+          fetchedProducts: products
+        });
+      } else {
+        res.status(500).json({
+          message: 'No valid products are there to be fetched!'
+        });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: error.message
+      });
+    });
+});
+
 router.route('/').get((req, res, next) => {
   Product.find()
     .then(products => {

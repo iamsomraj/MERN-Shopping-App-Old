@@ -35,7 +35,6 @@ class Signup extends React.Component {
       };
       Axios.post('/user/signup', user)
         .then(response => {
-          console.log(response);
           this.setState({
             message: response.data.message
           });

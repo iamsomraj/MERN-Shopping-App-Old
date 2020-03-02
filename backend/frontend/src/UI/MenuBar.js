@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 export default class MenuBar extends Component {
   render() {
     return (
-      <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
+      <nav className="navbar fixed-top navbar-dark bg-primary navbar-expand-lg">
         <Link to="/" className="navbar-brand">
-          Shopping
+          React Mart
         </Link>
         <div className="collpase navbar-collapse">
           <ul className="navbar-nav mr-auto">
@@ -16,18 +16,13 @@ export default class MenuBar extends Component {
               </Link>
             </li>
             <li className="navbar-item">
-              <Link to="/products/add" className="nav-link">
-                Create Product
-              </Link>
-            </li>
-            <li className="navbar-item">
               <Link to="/orders/" className="nav-link">
                 Orders
               </Link>
             </li>
             <li className="navbar-item">
               <Link to="/users/login" className="nav-link">
-                Login
+                Profile
               </Link>
             </li>
           </ul>

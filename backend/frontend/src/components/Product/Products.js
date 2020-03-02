@@ -1,6 +1,7 @@
 import React from 'react';
 import Axios from '../../Axios';
 import Product from './Product';
+import { Link } from 'react-router-dom';
 
 class Products extends React.Component {
   state = {
@@ -8,18 +9,18 @@ class Products extends React.Component {
     message: ''
   };
 
-  buyProduct = (id, q) => {
-    if (q !== 0) {
-      console.log(Axios.defaults.headers.common['Authorization']);
-
+  buyProduct = (id, q, index) => {
+    if (q > 0) {
       const order = {
         productId: id,
         quantity: q
       };
       Axios.post('/orders/add', order)
         .then(response => {
-          console.log(response.data);
+          const products = this.state.products.slice(0);
+          products[index].message = response.data.message;
           this.setState({
+            products: products,
             message: response.data.message
           });
         })
@@ -32,20 +33,26 @@ class Products extends React.Component {
   };
 
   productList = () => {
+    let user = 'fsadf';
+    if (Axios.defaults.headers.common['User']) {
+      user = Axios.defaults.headers.common['User'].split(' ')[1];
+    }
     let products = [];
     this.state.products.forEach((product, index) => {
       products.push(
-        <div className="col-sm-4" key={index} style={{marginBottom: '1rem'}}>
+        <div className="col-sm-4" key={index} style={{ marginBottom: '2rem' }}>
           <Product
             id={product._id}
             name={product.name}
+            msg={this.state.products[index].message}
             price={product.price}
             img={product.productImage}
+            buyDisable={user}
             quantity={product.quantity}
-            quantityHandler={() => this.quantityHandler(index)}
+            quantityHandler={event => this.quantityHandler(event, index)}
             seller={product.userId}
             edit={() => this.editProduct(product._id)}
-            buy={() => this.buyProduct(product._id, product.quantity)}
+            buy={() => this.buyProduct(product._id, product.quantity, index)}
           />
         </div>
       );
@@ -80,10 +87,13 @@ class Products extends React.Component {
     return newProducts;
   };
 
-  quantityHandler = index => {
+  quantityHandler = (event, index) => {
     const products = this.state.products.slice(0);
     let quantity = this.state.products[index].quantity;
-    quantity += 1;
+    quantity = event.target.value;
+    if (quantity < 0) {
+      quantity = quantity * -1;
+    }
     products[index].quantity = quantity;
     this.setState({
       products: products
@@ -97,7 +107,8 @@ class Products extends React.Component {
           const newProducts = response.data.fetchedProducts.map(prod => {
             return {
               ...prod,
-              quantity: 0
+              quantity: 0,
+              message: ''
             };
           });
           this.setState({
@@ -123,6 +134,17 @@ class Products extends React.Component {
         <br />
         <div className="display-4">Products</div>
         <br />
+        {Axios.defaults.headers.common['User'] ? (
+          <Link
+            to="/products/add"
+            className="btn btn-primary text-white float-right"
+          >
+            Create Product
+          </Link>
+        ) : null}
+        <br />
+        <br />
+
         <div className="text-primary">
           {this.state.message === '' ? null : this.state.message}
         </div>
