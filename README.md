@@ -42,19 +42,20 @@ For frontend
 
 Watch this [video](https://youtu.be/BBs2-iJJ_mA) 
 
+
 ## Screenshots
 
-![](assets/Screenshot (66).png)
+![Screenshot (66)](/assets/Screenshot (66).png)
 
-![Screenshot (67)](assets/Screenshot (67).png)
+![Screenshot (67)](/assets/Screenshot (67).png)
 
-![Screenshot (68)](assets/Screenshot (68).png)
+![Screenshot (68)](/assets/Screenshot (68).png)
 
-![Screenshot (69)](assets/Screenshot (69).png)
+![Screenshot (69)](/assets/Screenshot (69).png)
 
-![Screenshot (70)](assets/Screenshot (70).png)
+![Screenshot (70)](/assets/Screenshot (70).png)
 
-![Screenshot (71)](assets/Screenshot (71).png)
+![Screenshot (71)](/assets/Screenshot (71).png)
 
 
 
