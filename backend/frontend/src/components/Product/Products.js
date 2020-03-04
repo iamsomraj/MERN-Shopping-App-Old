@@ -25,7 +25,10 @@ class Products extends React.Component {
           });
         })
         .catch(error => {
+          const products = this.state.products.slice(0);
+          products[index].message = error.message;
           this.setState({
+            products: products,
             message: error.message
           });
         });

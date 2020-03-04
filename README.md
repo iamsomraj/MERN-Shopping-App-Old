@@ -1,5 +1,7 @@
 # MERN-Shopping-App
 
+As the name suggests , MERN-Shopping-App is a repository of a Full stack MERN application. It is built using MongoDB, Express, React and Nodejs. There are mainly three sections in this. Products, Orders and users. Products, Orders are CRUD supported. Users are authenticated using json web token.
+
 ## Developer
 
 LinkedIn : [iamsomraj](https://www.linkedin.com/in/iamsomraj/) 😊
