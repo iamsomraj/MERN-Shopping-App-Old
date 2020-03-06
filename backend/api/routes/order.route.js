@@ -105,4 +105,29 @@ router.route('/:orderId').delete(auth, (req, res, next) => {
     });
 });
 
+router.route('/:orderId').delete(auth, (req, res, next) => {
+  const id = req.params.orderId;
+  Order.deleteOne({ _id: id, userId: req.userData.id })
+    .then(response => {
+      if (response.deletedCount > 0) {
+        const message = 'an order is successfully deleted'.toUpperCase();
+        res.status(200).json({
+          message: message,
+          deletedOrderId: id,
+          response: response
+        });
+      } else {
+        const error = new Error('Unauthorized access to the order');
+        res.status(401).json({
+          message: error.message
+        });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: error.message
+      });
+    });
+});
+
 module.exports = router;
