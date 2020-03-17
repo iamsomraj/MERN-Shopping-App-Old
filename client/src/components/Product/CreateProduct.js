@@ -52,10 +52,7 @@ class CreateProduct extends React.Component {
 
   render = () => {
     return (
-      <div
-        className="shadow container"
-        style={{ margin: '5rem', padding: '2rem' }}
-      >
+      <div className="shadow container">
         {Axios.defaults.headers.common['User'] &&
         Axios.defaults.headers.common['Authorization'] ? (
           Axios.defaults.headers.common['User'].split(' ')[1] &&

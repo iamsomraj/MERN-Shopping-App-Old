@@ -6,17 +6,11 @@ import './Product.css';
 
 class Product extends React.Component {
   render = () => (
-    <div>
+    <div style={{margin: '10px'}}>
       <div
-        className="shadow card card-fluid rounded bg-light product"
-        style={{
-          width: '18rem',
-          padding: '0.5rem'
-        }}
-      >
+        className="shadow card card-fluid rounded bg-light product">
         <img
           className="card-img-top"
-          style={{ height: '12rem', width: '17rem' }}
           src={'https://www.modernstationers.com/upload/product.png'}
           alt="Product Image"
         />

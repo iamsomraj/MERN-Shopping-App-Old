@@ -16,14 +16,17 @@ class App extends React.Component {
     return (
       <Router>
         <MenuBar />
-        <Route path="/" exact component={Products} />
-        <Route path="/products/" exact component={Products} />
-        <Route path="/products/edit/:id" exact component={EditProduct} />
-        <Route path="/products/add/" exact component={CreateProduct} />
-        <Route path="/users/login/" exact component={Login} />
-        <Route path="/users/signup" exact component={Signup} />
-        <Route path="/users/profile/:name" exact component={Profile} />
-        <Route path="/orders/" exact component={Orders} />
+        <div style={{ height: '200px', width: '100%' }}></div>
+        <div style={{ padding: '0 20px', width: '100%' }}>
+          <Route path="/" exact component={Products} />
+          <Route path="/products/" exact component={Products} />
+          <Route path="/products/edit/:id" exact component={EditProduct} />
+          <Route path="/products/add/" exact component={CreateProduct} />
+          <Route path="/users/login/" exact component={Login} />
+          <Route path="/users/signup" exact component={Signup} />
+          <Route path="/users/profile/:name" exact component={Profile} />
+          <Route path="/orders/" exact component={Orders} />
+        </div>
         <Footer />
       </Router>
     );

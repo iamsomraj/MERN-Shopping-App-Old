@@ -43,7 +43,7 @@ class Products extends React.Component {
     let products = [];
     this.state.products.forEach((product, index) => {
       products.push(
-        <div className="col-sm-4" key={index} style={{ marginBottom: '2rem' }}>
+        <div className="col-sm-4" key={index}>
           <Product
             id={product._id}
             name={product.name}
@@ -133,7 +133,7 @@ class Products extends React.Component {
 
   render = () => {
     return (
-      <div className="container" style={{ margin: '5rem', padding: '2rem' }}>
+      <div className="container">
         <br />
         <div className="display-4">Products</div>
         <br />

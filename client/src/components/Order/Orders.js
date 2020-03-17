@@ -59,10 +59,7 @@ class Orders extends React.Component {
 
   render = () => {
     return (
-      <div
-        className="shadow-lg conatiner rounded bg-light"
-        style={{ margin: '6rem', padding: '2rem' }}
-      >
+      <div className="shadow-lg conatiner rounded bg-light">
         <br />
         <div className="display-4">Orders</div>
         <br />

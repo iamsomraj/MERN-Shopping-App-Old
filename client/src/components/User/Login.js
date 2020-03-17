@@ -64,10 +64,7 @@ class Login extends React.Component {
 
   render = () => {
     return (
-      <div
-        className="shadow-lg conatiner rounded bg-light"
-        style={{ margin: '10rem', padding: '5rem' }}
-      >
+      <div className="shadow-lg conatiner rounded bg-light">
         {Axios.defaults.headers.common['User'] &&
         Axios.defaults.headers.common['Authorization'] ? (
           Axios.defaults.headers.common['User'].split(' ')[1] &&

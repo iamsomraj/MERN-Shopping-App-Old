@@ -73,21 +73,7 @@ class Profile extends React.Component {
     let products = [];
     this.state.products.forEach((product, index) => {
       products.push(
-        <div
-          className="col-sm-3"
-          key={index}
-          style={{ 
-            
-            // marginBottom: '2rem', 
-            
-            
-            // marginRight: '2rem'       
-            
-            margin: '2rem' 
-          
-          
-          }}
-        >
+        <div className="col-sm-3" key={index}>
           <Product
             id={product._id}
             name={product.name}
@@ -153,10 +139,7 @@ class Profile extends React.Component {
   };
   render = () => {
     return (
-      <div
-        className="shadow-lg conatiner rounded bg-light"
-        style={{ margin: '5rem', padding: '5rem' }}
-      >
+      <div className="shadow-lg conatiner rounded bg-light">
         {Axios.defaults.headers.common['User'] &&
         Axios.defaults.headers.common['Authorization'] ? (
           Axios.defaults.headers.common['User'].split(' ')[1] &&
@@ -171,28 +154,24 @@ class Profile extends React.Component {
               </button>
               <br />
               <div className="text text-primary">
-                <p className="lead display-2">{'Hello, ' + this.state.name}</p>
+                <p className="lead display-4">{'Hello, ' + this.state.name}</p>
               </div>
               <br />
               <br />
               <br />
               <div>
-                <p className="text text-dark display-4">
+                <p className="text text-dark">
                   Want to check all your orders?
                 </p>
               </div>
               <br />
-              <NavLink
-                style={{ margin: '2rem' }}
-                to="/orders/"
-                className="btn btn-success text-white"
-              >
+              <NavLink to="/orders/" className="btn btn-success text-white">
                 Orders
               </NavLink>
 
               <br />
               <br />
-              <div className="text text-dark display-4">
+              <div className="text text-dark">
                 All of your products
               </div>
               <br />

@@ -47,7 +47,7 @@ class Signup extends React.Component {
     }
   };
 
-  loginBtnHandler = (event) => {
+  loginBtnHandler = event => {
     event.preventDefault();
 
     window.location = 'login';
@@ -55,15 +55,12 @@ class Signup extends React.Component {
 
   render = () => {
     return (
-      <div
-        className="shadow conatiner rounded"
-        style={{ margin: '10rem', padding: '5rem' }}
-      >
+      <div className="shadow conatiner rounded">
         <br />
         <div className="display-4">Signup</div>
         <div className="text-primary">
           <br />
-          Minimum {this.state.length+1} characters required for Username &
+          Minimum {this.state.length + 1} characters required for Username &
           Password
           <br />
           <br />

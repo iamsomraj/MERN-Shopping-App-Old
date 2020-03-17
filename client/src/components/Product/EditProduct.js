@@ -82,10 +82,7 @@ class EditProduct extends React.Component {
   };
   render = () => {
     return (
-      <div
-        className="shadow container"
-        style={{ margin: '5rem', padding: '2rem' }}
-      >
+      <div className="shadow container">
         <div className="display-4">Edit My Product</div>
         <br />
         <div className="text text-primary">
