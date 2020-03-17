@@ -21,7 +21,7 @@ class App extends React.Component {
         <Route path="/products/edit/:id" exact component={EditProduct} />
         <Route path="/products/add/" exact component={CreateProduct} />
         <Route path="/users/login/" exact component={Login} />
-        <Route path="/users/signup/" exact component={Signup} />
+        <Route path="/users/signup" exact component={Signup} />
         <Route path="/users/profile/:name" exact component={Profile} />
         <Route path="/orders/" exact component={Orders} />
         <Footer />

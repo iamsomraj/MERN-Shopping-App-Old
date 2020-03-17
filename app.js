@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const app = express();
 const productRoute = require('./api/routes/product.route');
@@ -8,10 +9,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-const url =
-  'mongodb+srv://somraj:' +
-  process.env.ATLAS_URL_PW +
-  '@cluster0-omuro.gcp.mongodb.net/test?retryWrites=true&w=majority';
+const url = process.env.MONGODB_URI;
 
 mongoose.connect(url, {
   useNewUrlParser: true,
@@ -23,14 +21,25 @@ mongoose.connection.once('open', () => {
 });
 
 app.use(cors());
-app.use(morgan('dev'));
+
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
+
 app.use(express.json());
 
 app.use(express.static('public'));
 
 app.use('/products', productRoute);
 app.use('/orders', orderRoute);
-app.use('/user', userRoute);
+app.use('/users', userRoute);
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+  app.get('*', (req, res, next) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
 
 app.use((req, res, next) => {
   const error = new Error('Not found');
