@@ -32,7 +32,7 @@ app.use(express.static('public'));
 
 app.use('/products', productRoute);
 app.use('/orders', orderRoute);
-app.use('/users', userRoute);
+app.use('/user', userRoute);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
