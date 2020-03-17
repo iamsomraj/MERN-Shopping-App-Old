@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import './Product.css';
 
 class Product extends React.Component {
-
   render = () => (
     <div>
       <div
@@ -18,7 +17,7 @@ class Product extends React.Component {
         <img
           className="card-img-top"
           style={{ height: '12rem', width: '17rem' }}
-          src={'/' + this.props.img.slice(7)}
+          src={'https://www.modernstationers.com/upload/product.png'}
           alt="Product Image"
         />
         <div className="card-body">
