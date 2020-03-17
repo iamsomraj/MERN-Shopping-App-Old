@@ -18,7 +18,7 @@ class Product extends React.Component {
         <img
           className="card-img-top"
           style={{ height: '12rem', width: '17rem' }}
-          src={'http://localhost:5000/' + this.props.img.slice(7)}
+          src={'/' + this.props.img.slice(7)}
           alt="Product Image"
         />
         <div className="card-body">
