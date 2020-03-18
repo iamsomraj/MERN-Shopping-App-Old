@@ -139,7 +139,7 @@ class Profile extends React.Component {
   };
   render = () => {
     return (
-      <div className="shadow-lg conatiner rounded bg-light">
+      <div className="container rounded">
         {Axios.defaults.headers.common['User'] &&
         Axios.defaults.headers.common['Authorization'] ? (
           Axios.defaults.headers.common['User'].split(' ')[1] &&
@@ -160,26 +160,19 @@ class Profile extends React.Component {
               <br />
               <br />
               <div>
-                <p className="text text-dark">
-                  Want to check all your orders?
-                </p>
+                <p className="text text-dark">Want to check all your orders?</p>
               </div>
-              <br />
               <NavLink to="/orders/" className="btn btn-success text-white">
                 Orders
               </NavLink>
 
-              <br />
-              <br />
-              <div className="text text-dark">
-                All of your products
-              </div>
-              <br />
-              <br />
-              <br />
               {Axios.defaults.headers.common['User'] ? (
                 <div>
-                  <p></p>
+                  <br />
+                  <br />
+                  <div>
+                    <p className="text text-dark">Want to sell your product?</p>
+                  </div>
                   <Link
                     to="/products/add"
                     className="btn btn-success text-white"
@@ -189,8 +182,8 @@ class Profile extends React.Component {
                 </div>
               ) : null}
               <br />
+              <div className="lead text-dark display-4">have a look at your products</div>
               <br />
-
               <div className="text-primary">
                 {this.state.message === '' ? null : this.state.message}
               </div>

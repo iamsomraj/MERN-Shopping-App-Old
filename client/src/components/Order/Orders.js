@@ -59,7 +59,7 @@ class Orders extends React.Component {
 
   render = () => {
     return (
-      <div className="shadow-lg conatiner rounded bg-light">
+      <div className="container rounded">
         <br />
         <div className="display-4">Orders</div>
         <br />
@@ -95,21 +95,21 @@ class Orders extends React.Component {
           ) : (
             <div className="text text-primary">
               <br />
+              <br />
               Please Login First
               <br />
-              <br /> <br />
-              <br /> <br /> <br /> <br /> <br /> <br />
               <br />
+              <div style={{ width: '100%', height: '300px' }}></div>
             </div>
           )
         ) : (
           <div className="text text-primary">
             <br />
+            <br />
             Please Login First
             <br />
-            <br /> <br />
-            <br /> <br /> <br /> <br /> <br /> <br />
             <br />
+            <div style={{ width: '100%', height: '300px' }}></div>
           </div>
         )}
       </div>

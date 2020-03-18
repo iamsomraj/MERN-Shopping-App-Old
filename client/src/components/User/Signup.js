@@ -55,7 +55,7 @@ class Signup extends React.Component {
 
   render = () => {
     return (
-      <div className="shadow conatiner rounded">
+      <div className="container rounded">
         <br />
         <div className="display-4">Signup</div>
         <div className="text-primary">
